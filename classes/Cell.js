@@ -24,6 +24,10 @@ class Cell {
 
     const x = this.position.x + Math.floor(Math.random() * 3) - 1;
     const y = this.position.y + Math.floor(Math.random() * 3) - 1;
+    // make sure the new cell is not out of bounds
+    if (x < 0 || x >= window.gridSize.x || y < 0 || y >= window.gridSize.y) {
+      return;
+    }
     // Check if the cell is occupied
     if (
       window.cells.some(
@@ -198,39 +202,36 @@ class Cell {
               this.target = null;
             }
           }
-        }
-
-        const nearbyCells = window.cells.filter(
-          (otherCell) =>
-            Math.abs(this.position.x - otherCell.position.x) < 20 &&
-            Math.abs(this.position.y - otherCell.position.y) < 20
-        );
-        // make sure the cell isn't targeting itself
-        const index = nearbyCells.indexOf(this);
-        if (index > -1) {
-          nearbyCells.splice(index, 1);
-        }
-        if (nearbyCells.length > 0) {
-          // set target to the closest cell
-          const target = nearbyCells.reduce((closest, otherCell) => {
-            const distanceToClosest = Math.sqrt(
-              Math.pow(this.position.x - closest.position.x, 2) +
-                Math.pow(this.position.y - closest.position.y, 2)
-            );
-            const distanceToOther = Math.sqrt(
-              Math.pow(this.position.x - otherCell.position.x, 2) +
-                Math.pow(this.position.y - otherCell.position.y, 2)
-            );
-            if (distanceToOther < distanceToClosest) {
-              return otherCell;
-            } else {
-              return closest;
-            }
-          });
-          // only set target if we are hungry
-          if (this.energy < 1500) this.target = target;
-        } else {
-          this.target = null;
+        } else if (this.energy < 1500) {
+          const nearbyCells = window.cells.filter(
+            (otherCell) =>
+              Math.abs(this.position.x - otherCell.position.x) < 20 &&
+              Math.abs(this.position.y - otherCell.position.y) < 20
+          );
+          // make sure the cell isn't targeting itself
+          const index = nearbyCells.indexOf(this);
+          if (index > -1) {
+            nearbyCells.splice(index, 1);
+          }
+          if (nearbyCells.length > 0) {
+            // set target to the closest cell
+            const target = nearbyCells.reduce((closest, otherCell) => {
+              const distanceToClosest = Math.sqrt(
+                Math.pow(this.position.x - closest.position.x, 2) +
+                  Math.pow(this.position.y - closest.position.y, 2)
+              );
+              const distanceToOther = Math.sqrt(
+                Math.pow(this.position.x - otherCell.position.x, 2) +
+                  Math.pow(this.position.y - otherCell.position.y, 2)
+              );
+              if (distanceToOther < distanceToClosest) {
+                return otherCell;
+              } else {
+                return closest;
+              }
+            });
+            this.target = target;
+          }
         }
         break;
     }
