@@ -3,6 +3,7 @@ import {
   handleStartStopBtnClick,
   handleCloseBtnClick,
   handleCanvasClick,
+  handlePhenotypeInfoClick,
 } from "./utils/eventListeners.js";
 
 // Start the simulation
@@ -12,3 +13,4 @@ run();
 handleStartStopBtnClick();
 handleCloseBtnClick();
 handleCanvasClick();
+handlePhenotypeInfoClick();

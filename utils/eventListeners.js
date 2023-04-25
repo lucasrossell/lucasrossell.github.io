@@ -1,5 +1,6 @@
 import { start, stop } from "../world.js";
 import { generateModal } from "./generateModal.js";
+import { generatePhenotypeInfo } from "./generatePhenotypeInfo.js";
 
 export function handleStartStopBtnClick() {
   const startStopBtn = document.getElementById("start-stop-btn");
@@ -24,6 +25,13 @@ export function handleStartStopBtnClick() {
       isRunning = true;
       startStopBtn.innerText = "Stop";
     }
+  });
+}
+
+export function handlePhenotypeInfoClick() {
+  const phenotypeInfoBtn = document.getElementById("phenotype-info-btn");
+  phenotypeInfoBtn.addEventListener("click", () => {
+    generatePhenotypeInfo();
   });
 }
 
