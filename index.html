@@ -12,23 +12,9 @@
       <h2 id="modal-title"></h2>
       <p id="modal-text"></p>
     </div>
-
     <button id="start-stop-btn">Start</button>
     <canvas id="canvas" width="800" height="600"></canvas>
     <script type="module" src="main.js"></script>
-    <script>
-      const startStopBtn = document.getElementById("start-stop-btn");
-      let bool = false;
-
-      startStopBtn.addEventListener("click", () => {
-        if (bool) {
-          startStopBtn.style.backgroundColor = "green";
-          bool = false;
-        } else {
-          startStopBtn.style.backgroundColor = "red";
-          bool = true;
-        }
-      });
-    </script>
+    <script type="module" src="./utils/eventListeners.js"></script>
   </body>
 </html>

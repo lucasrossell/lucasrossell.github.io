@@ -1,18 +1,12 @@
-import { run, start, stop } from "./world.js";
-let isRunning = false;
+import { run } from "./world.js";
+import {
+  handleStartStopBtnClick,
+  handleCloseBtnClick,
+} from "./utils/eventListeners.js";
+
+// Start the simulation
 run();
-document.getElementById("start-stop-btn").addEventListener("click", () => {
-  if (isRunning) {
-    stop();
-    isRunning = false;
-    document.getElementById("start-stop-btn").innerText = "Start";
-  } else {
-    start();
-    isRunning = true;
-    document.getElementById("start-stop-btn").innerText = "Stop";
-  }
-});
-document.getElementById("close-btn").addEventListener("click", () => {
-  const modal = document.getElementById("modal");
-  modal.style.display = "none";
-});
+
+// Event listeners
+handleStartStopBtnClick();
+handleCloseBtnClick();
