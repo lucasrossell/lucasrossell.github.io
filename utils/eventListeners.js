@@ -1,4 +1,5 @@
 import { start, stop } from "../world.js";
+import { generateModal } from "./generateModal.js";
 
 export function handleStartStopBtnClick() {
   const startStopBtn = document.getElementById("start-stop-btn");
@@ -31,5 +32,21 @@ export function handleCloseBtnClick() {
   closeBtn.addEventListener("click", () => {
     const modal = document.getElementById("modal");
     modal.style.display = "none";
+  });
+}
+
+export function handleCanvasClick() {
+  const canvas = document.getElementById("canvas");
+  canvas.addEventListener("click", (e) => {
+    const x = Math.floor(e.offsetX / window.cellSize.x);
+    const y = Math.floor(e.offsetY / window.cellSize.y);
+    const cell = window.cells.find(
+      (cell) => cell.position.x === x && cell.position.y === y
+    );
+    // create a modal popup with the cell properties
+    if (cell) {
+      generateModal(cell);
+      console.log(cell);
+    }
   });
 }
