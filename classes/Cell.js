@@ -1,6 +1,8 @@
+import { generateRandomName } from "../utils/generateRandomName.js";
+
 class Cell {
   constructor(x, y, genetics) {
-    this.id = Math.random().toString(16).slice(2);
+    this.id = generateRandomName();
     this.position = { x, y };
     this.inSunlight = false;
     this.energy = 1500;
