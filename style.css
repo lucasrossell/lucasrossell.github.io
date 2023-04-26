@@ -79,3 +79,20 @@
   top: 0;
   right: 0;
 }
+
+.slider-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px;
+}
+
+label {
+  margin-right: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+.slider {
+  width: 120px;
+}
