@@ -31,6 +31,8 @@ export function handleStartStopBtnClick() {
 export function handlePhenotypeInfoClick() {
   const phenotypeInfoBtn = document.getElementById("phenotype-info-btn");
   phenotypeInfoBtn.addEventListener("click", () => {
+    window.phenotypeModalOpen = true;
+    window.cellModalOpen = false;
     generatePhenotypeInfo();
   });
 }
@@ -40,6 +42,9 @@ export function handleCloseBtnClick() {
   closeBtn.addEventListener("click", () => {
     const modal = document.getElementById("modal");
     modal.style.display = "none";
+    window.cellModalOpen = false;
+    window.cell = null;
+    window.phenotypeModalOpen = false;
   });
 }
 
@@ -53,6 +58,9 @@ export function handleCanvasClick() {
     );
     // create a modal popup with the cell properties
     if (cell) {
+      window.phenotypeModalOpen = false;
+      window.cellModalOpen = true;
+      window.cell = cell;
       generateModal(cell);
       console.log(cell);
     }

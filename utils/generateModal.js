@@ -15,6 +15,13 @@ function generateModal(cell) {
   banner.style.backgroundColor = cell.color;
   modal.style.display = "block";
   modalTable.innerHTML = null;
+
+  // if cell is no longer in cells, close the modal
+  if (!window.cells.some((c) => c.id === cell.id)) {
+    modal.style.display = "none";
+    window.cellModalOpen = false;
+    return;
+  }
 }
 
 export { generateModal };

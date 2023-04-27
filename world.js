@@ -1,6 +1,8 @@
 import Cell from "./classes/Cell.js";
 import { suncycle } from "./utils/suncycle.js";
 
+import { generateModal } from "./utils/generateModal.js";
+import { generatePhenotypeInfo } from "./utils/generatePhenotypeInfo.js";
 // getting the canvas and setting other fun variables
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -65,6 +67,13 @@ function update() {
   });
   // draw the canvas again
   draw();
+  if (window.cellModalOpen) {
+    // update and generateModal
+    generateModal(window.cell);
+  } else if (window.phenotypeModalOpen) {
+    // update and generatePhenotypeInfo
+    generatePhenotypeInfo();
+  }
 }
 
 function draw() {
