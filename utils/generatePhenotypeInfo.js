@@ -13,6 +13,7 @@ function generatePhenotypeInfo() {
         diets: cell.diet,
         behaviors: cell.behavior,
         color: cell.color,
+        ancestor: cell.ancestor,
       };
     }
     return acc;
@@ -28,6 +29,7 @@ function generatePhenotypeInfo() {
       <th>Count</th>
       <th>Diet</th>
       <th>Behavior</th>
+      <th>Ancestor</th>
     </tr>
   `;
 
@@ -41,6 +43,7 @@ function generatePhenotypeInfo() {
     const countCell = document.createElement("td");
     const dietCell = document.createElement("td");
     const behaviorCell = document.createElement("td");
+    const ancestorCell = document.createElement("td");
 
     colorCell.style.backgroundColor = group.color;
     colorCell.style.height = "10px";
@@ -49,12 +52,14 @@ function generatePhenotypeInfo() {
     countCell.innerText = group.count;
     dietCell.innerText = group.diets;
     behaviorCell.innerText = group.behaviors;
+    ancestorCell.innerText = group.ancestor ? group.ancestor : "none";
 
     row.appendChild(colorCell);
     row.appendChild(phenotypeCell);
     row.appendChild(countCell);
     row.appendChild(dietCell);
     row.appendChild(behaviorCell);
+    row.appendChild(ancestorCell);
     modalTable.appendChild(row);
   }
 

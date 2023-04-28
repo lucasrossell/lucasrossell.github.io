@@ -11,6 +11,7 @@ class Cell {
     this.behavior = genetics.behavior;
     this.diet = genetics.diet;
     this.phenotype = genetics.phenotype;
+    this.ancestor = genetics.ancestor;
     this.target = null;
     this.warmth = 0;
     this.chanceToMove = 0;
@@ -40,16 +41,48 @@ class Cell {
     }
 
     // make the color slightly different than the parent
-    const newColor = this.color.replace(
-      /(\d+)/,
-      (match) => Number(match) + Math.floor(Math.random() * 10) - 5
-    );
+    const mutationChance = 0.001; // .1% chance of mutation
+    const isMutation = Math.random() < mutationChance;
+    const colorChange = isMutation ? 40 : 8; // higher color change if mutation occurs
+
+    const newColor = this.color.replace(/(\d+)/, (match) => {
+      let newValue =
+        Number(match) +
+        Math.floor(Math.random() * colorChange * 2) -
+        colorChange;
+      newValue = Math.max(0, Math.min(255, newValue)); // clamp the value between 0 and 255
+      return newValue;
+    });
+
+    let newBehavior = this.behavior;
+    let newDiet = this.diet;
+    let newPhenotype = this.phenotype;
+    let newAncestor = this.ancestor;
+
+    if (isMutation) {
+      const diets = ["sun", "meat"];
+      const movementBehaviors = ["random", "sedentary", "sunlight", "hunt"];
+      const randomChoice = Math.random() < 0.5;
+      if (randomChoice) {
+        newBehavior =
+          movementBehaviors[
+            Math.floor(Math.random() * movementBehaviors.length)
+          ];
+      } else {
+        newDiet = diets[Math.floor(Math.random() * diets.length)];
+      }
+      newPhenotype =
+        Math.max(...window.cells.map((cell) => cell.phenotype)) + 1;
+      newAncestor = this.phenotype;
+    }
+
     this.energy -= 300;
     const newCell = new Cell(x, y, {
       color: newColor,
-      behavior: this.behavior,
-      diet: this.diet,
-      phenotype: this.phenotype,
+      behavior: newBehavior,
+      diet: newDiet,
+      phenotype: newPhenotype,
+      ancestor: newAncestor,
     });
     window.cells.push(newCell);
   }
@@ -103,7 +136,7 @@ class Cell {
 
   move() {
     if (Math.random() < this.chanceToMove) {
-      this.lifeCycle(window.cells);
+      this.lifeCycle();
       // check if cell has target and move towards it
       if (this.target) {
         const distanceToTarget = Math.sqrt(
@@ -166,10 +199,10 @@ class Cell {
   think() {
     switch (this.behavior) {
       case "random":
-        this.chanceToMove = 0.1;
+        this.chanceToMove = 0.5;
         break;
       case "sedentary":
-        this.chanceToMove = 0;
+        this.chanceToMove = 0.01;
         break;
       case "sunlight":
         //check if within 20 units of sunlight

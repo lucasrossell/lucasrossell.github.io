@@ -1,8 +1,9 @@
 import Cell from "./classes/Cell.js";
 import { suncycle } from "./utils/suncycle.js";
-
 import { generateModal } from "./utils/generateModal.js";
 import { generatePhenotypeInfo } from "./utils/generatePhenotypeInfo.js";
+import { getRandomPosition } from "./utils/getRandomPosition.js";
+
 // getting the canvas and setting other fun variables
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -18,26 +19,39 @@ window.cellSize = {
 window.sunlight = { x: 40, y: 30 }; // the sun starts in the middle
 window.cells = []; // array of cells
 
+// cell genetics constants
+const DIETS = {
+  SUN: "sun",
+  MEAT: "meat",
+};
+const BEHAVIORS = {
+  RANDOM: "random",
+  SEDENTARY: "sedentary",
+  SUNLIGHT: "sunlight",
+  HUNT: "hunt",
+};
+
 function initWorld(numCells) {
   // for numCells, create a new cell at a random position
   for (let i = 0; i < numCells; i++) {
-    const x = Math.floor(Math.random() * window.gridSize.x);
-    const y = Math.floor(Math.random() * window.gridSize.y);
+    const { x, y } = getRandomPosition();
     // pick a random color that is not white
     const color = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
       Math.random() * 255
     )}, ${Math.floor(Math.random() * 255)})`;
     // pick a random behavior and diet
-    const diets = ["sun", "meat"];
-    const diet = diets[Math.floor(Math.random() * 2)];
+    const diet = Math.random() < 0.5 ? DIETS.SUN : DIETS.MEAT;
     let behavior;
-    if (diet === "sun") {
-      // any behavior except hunt
-      const movementBehaviors = ["random", "sedentary", "sunlight"];
+    if (diet === DIETS.SUN) {
+      const movementBehaviors = [
+        BEHAVIORS.RANDOM,
+        BEHAVIORS.SEDENTARY,
+        BEHAVIORS.SUNLIGHT,
+      ];
       behavior =
         movementBehaviors[Math.floor(Math.random() * movementBehaviors.length)];
     } else {
-      behavior = "hunt";
+      behavior = BEHAVIORS.HUNT;
     }
 
     // check if the cell is already occupied
@@ -49,7 +63,13 @@ function initWorld(numCells) {
       continue;
     }
     // create the cell and add it to the array
-    const cell = new Cell(x, y, { color, behavior, diet, phenotype: i });
+    const cell = new Cell(x, y, {
+      color,
+      behavior,
+      diet,
+      phenotype: i,
+      ancestor: null,
+    });
     window.cells.push(cell);
   }
 }
